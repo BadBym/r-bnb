@@ -69,6 +69,7 @@ export default function MapScreen({ navigation }) {
       const { coordinate } = event.nativeEvent;
       console.log(`Latitude: ${coordinate.latitude}, Longitude: ${coordinate.longitude}`);
       setMarkerCoordinate(coordinate);
+      setModalVisible(true);
     }
   };
 
@@ -128,7 +129,7 @@ export default function MapScreen({ navigation }) {
         Ajouter un lieu
       </Button>
 
-      <FlatScreen visible={modalVisible} onDismiss={() => setModalVisible(false)} />
+      <FlatScreen visible={modalVisible} onDismiss={() => setModalVisible(false)} coordinates={markerCoordinate} />
     </View>
   );
 }
