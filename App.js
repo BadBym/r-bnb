@@ -8,20 +8,26 @@ import SigninScreen from './src/screens/SigninScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import BottomTabs from './src/screens/tabNavigator';
 import SignupScreen from './src/screens/SignupScreen';
+import FlatScreen from './src/screens/FlatScreen';
+import { PaperProvider } from 'react-native-paper';
 
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
-        <Stack.Navigator initialRouteName='Home' screenOptions={{headerShown: false}}>
-            <Stack.Screen name="Home" component={BottomTabs} />
-            <Stack.Screen name="Signup" component={SignupScreen} />
-            <Stack.Screen name="Signin" component={SigninScreen} />
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-        </Stack.Navigator>
-    </NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer>
+          <Stack.Navigator initialRouteName='Home' screenOptions={{headerShown: false}}>
+              <Stack.Screen name="Home" component={BottomTabs} />
+              <Stack.Screen name="Signup" component={SignupScreen} />
+              <Stack.Screen name="Signin" component={SigninScreen} />
+              <Stack.Screen name="Flat" component={FlatScreen} />
+              <Stack.Screen name="Profile" component={ProfileScreen} />
+          </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
+
   );
 }
 

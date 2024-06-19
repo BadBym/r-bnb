@@ -4,24 +4,37 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
+import MapScreen from './MapScreen';
+import FavoritesScreen from './FavoritesScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabs = () => {
   return (
     <Tab.Navigator
-      initialRouteName="tabHome"
+      initialRouteName="tabMap"
       activeColor="#e91e63"
       barStyle={{ backgroundColor: 'tomato' }}
     >
       <Tab.Screen
-        name="tabHome"
-        component={HomeScreen}
+        name="tabMap"
+        component={MapScreen}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: 'Map',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <MaterialCommunityIcons name="map" color={color} size={26} />
           ),
+        }}
+      />
+      <Tab.Screen
+        name="Favorite"
+        component={FavoritesScreen}
+        options={{
+          tabBarLabel: 'My Favorites',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="heart" color={color} size={26} />
+          ),
+          tabBarBadge: 1
         }}
       />
       <Tab.Screen
@@ -30,7 +43,7 @@ const BottomTabs = () => {
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="chat" color={color} size={26} />
+            <MaterialCommunityIcons name="head" color={color} size={26} />
           ),
           tabBarBadge: 1
         }}
