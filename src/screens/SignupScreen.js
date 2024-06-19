@@ -9,7 +9,7 @@ export default function SignupScreen({ navigation }) {
 
         try {
           // Envoi des données au backend
-          const response = await fetch('http://192.168.1.194:3001/auth/signup', {
+          const response = await fetch('http://192.168.1.138:3001/auth/signup', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -47,6 +47,7 @@ export default function SignupScreen({ navigation }) {
                         onChangeText={text => setEmail(text)}
                         style={styles.input}
                         mode="outlined"
+                        autoCapitalize="none"
                     />
                     <TextInput
                         label="Password"
@@ -55,6 +56,7 @@ export default function SignupScreen({ navigation }) {
                         secureTextEntry
                         style={styles.input}
                         mode="outlined"
+                        autoCapitalize="none"
                     />
                     <Button
                         mode="contained"

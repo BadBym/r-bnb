@@ -1,6 +1,7 @@
 import {View, Text, StyleSheet, Alert} from 'react-native'
 import React, { useState } from 'react'
 import { Button, Card, TextInput, Title } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SigninScreen({ navigation }) {
 
@@ -10,7 +11,7 @@ export default function SigninScreen({ navigation }) {
   const handleLogin = async () => {
       try {
           // Envoi des données au backend
-          const response = await fetch('http://192.168.1.194:3001/auth/signin', {
+          const response = await fetch('http://192.168.1.138:3001/auth/signin', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -22,10 +23,14 @@ export default function SigninScreen({ navigation }) {
           });
 
           if (response.ok) {
-              // Inscription réussie, rediriger vers l'écran principal ou effectuer d'autres actions nécessaires
-              // Stocker le token
+              const responseData = await response.json();
+              const token = responseData.token;
 
-              navigation.replace('Home');
+              // Stocker le token dans AsyncStorage
+              await AsyncStorage.setItem('userToken', token);
+
+              // Connexion réussie, rediriger vers l'écran principal ou effectuer d'autres actions nécessaires
+                      navigation.replace('Home');
           } else {
               // Gérer les erreurs de l'API backend
               const errorData = await response.json();
