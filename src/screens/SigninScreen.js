@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native'
+import {View, Text, StyleSheet, Alert} from 'react-native'
 import React, { useState } from 'react'
 import { Button, Card, TextInput, Title } from 'react-native-paper';
 
@@ -7,13 +7,37 @@ export default function SigninScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    console.log('connecté')
+  const handleLogin = async () => {
+      try {
+          // Envoi des données au backend
+          const response = await fetch('http://192.168.1.194:3001/auth/signin', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  email,
+                  password,
+              }),
+          });
+
+          if (response.ok) {
+              // Inscription réussie, rediriger vers l'écran principal ou effectuer d'autres actions nécessaires
+              // Stocker le token
+
+              navigation.replace('Home');
+          } else {
+              // Gérer les erreurs de l'API backend
+              const errorData = await response.json();
+              Alert.alert('Login Failed', errorData.message || 'Something went wrong!');
+          }
+      } catch (error) {
+          // Gérer les erreurs de connexion ou autres erreurs
+          console.error('Error Login:', error);
+          Alert.alert('Signup Failed', 'Check your network connection and try again.');
+      }
   };
-    const handleSignup = () => {
-        // Navigation vers l'écran d'inscription
-        navigation.navigate('Signup');
-    };
+
 
   return (
     <View style={styles.container}>
@@ -35,11 +59,12 @@ export default function SigninScreen({ navigation }) {
                     mode="outlined"
                     secureTextEntry
                     style={styles.input}
+                    autoCapitalize="none"
                 />
                 <Button mode="contained" onPress={handleLogin} style={styles.button}>
                     Se connecter
                 </Button>
-                <Button onPress={handleSignup} style={styles.signupButton}>
+                <Button onPress={() => navigation.navigate('Signup')} style={styles.signupButton}>
                     Je n'ai pas de compte, m'inscrire
                 </Button>
             </Card.Content>
