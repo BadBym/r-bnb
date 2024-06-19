@@ -17,6 +17,7 @@ export default function SignupScreen({ navigation }) {
                         value={username}
                         onChangeText={text => setUsername(text)}
                         style={styles.input}
+                        mode="outlined"
                     />
                     <TextInput
                         label="Password"
@@ -24,6 +25,7 @@ export default function SignupScreen({ navigation }) {
                         onChangeText={text => setPassword(text)}
                         secureTextEntry
                         style={styles.input}
+                        mode="outlined"
                     />
                     <TextInput
                         label="Confirm Password"
@@ -31,6 +33,7 @@ export default function SignupScreen({ navigation }) {
                         onChangeText={text => setConfirmPassword(text)}
                         secureTextEntry
                         style={styles.input}
+                        mode="outlined"
                     />
                     <Button
                         mode="contained"
@@ -40,7 +43,7 @@ export default function SignupScreen({ navigation }) {
                         Sign Up
                     </Button>
                     <Button
-                        onPress={() => navigation.navigate('Login')}
+                        onPress={() => navigation.navigate('Signin')}
                         style={styles.link}
                     >
                         Already have an account? Login
