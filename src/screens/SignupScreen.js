@@ -1,11 +1,41 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { Text, TextInput, Button, Card, Title } from 'react-native-paper';
 
 export default function SignupScreen({ navigation }) {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const handleSignUp = async () => {
+
+
+        try {
+          // Envoi des données au backend
+          const response = await fetch('http://192.168.1.138:3001/auth/signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email,
+              password,
+            }),
+          });
+
+          if (response.ok) {
+            // Inscription réussie, rediriger vers l'écran principal ou effectuer d'autres actions nécessaires
+            Alert.alert('Success', 'Votre compte a été créé avec succès');
+            navigation.replace('Signin');
+          } else {
+            // Gérer les erreurs de l'API backend
+            const errorData = await response.json();
+            Alert.alert('Signup Failed', errorData.message || 'Something went wrong!');
+          }
+        } catch (error) {
+          // Gérer les erreurs de connexion ou autres erreurs
+          console.error('Error signing up:', error);
+          Alert.alert('Signup Failed', 'Check your network connection and try again.');
+        }
+      };
 
     return (
         <View style={styles.container}>
@@ -13,9 +43,9 @@ export default function SignupScreen({ navigation }) {
                 <Card.Content>
                     <Title>Sign Up</Title>
                     <TextInput
-                        label="Username"
-                        value={username}
-                        onChangeText={text => setUsername(text)}
+                        label="Email"
+                        value={email}
+                        onChangeText={text => setEmail(text)}
                         style={styles.input}
                         mode="outlined"
                     />
@@ -27,20 +57,12 @@ export default function SignupScreen({ navigation }) {
                         style={styles.input}
                         mode="outlined"
                     />
-                    <TextInput
-                        label="Confirm Password"
-                        value={confirmPassword}
-                        onChangeText={text => setConfirmPassword(text)}
-                        secureTextEntry
-                        style={styles.input}
-                        mode="outlined"
-                    />
                     <Button
                         mode="contained"
-                        onPress={() => navigation.replace('Login')}
+                        onPress={handleSignUp}
                         style={styles.button}
                     >
-                        Sign Up
+                        Inscription
                     </Button>
                     <Button
                         onPress={() => navigation.navigate('Signin')}
