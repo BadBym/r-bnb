@@ -11,6 +11,8 @@ export default function MapScreen({ navigation }) {
   const [errorMsg, setErrorMsg] = useState(null);
   const [region, setRegion] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [showRedFrame, setShowRedFrame] = useState(false);
+  const [markerCoordinate, setMarkerCoordinate] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -33,7 +35,7 @@ export default function MapScreen({ navigation }) {
 
   const handleLogout = async () => {
     try {
-      const token = await AsyncStorage.getItem('userToken'); // Remplacez 'userToken' par la clé correcte utilisée pour stocker le token
+      const token = await AsyncStorage.getItem('userToken');
 
       if (!token) {
         Alert.alert('Logout Failed', 'No token found');
@@ -44,15 +46,13 @@ export default function MapScreen({ navigation }) {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`, // Ajouter le token dans l'en-tête Authorization
+          'Authorization': `Bearer ${token}`,
         },
       });
 
       if (response.ok) {
         Alert.alert('Disconnected', 'Vous vous êtes déconnectés');
         navigation.replace('Signin');
-
-        // Optionnel : Supprimer le token de AsyncStorage après la déconnexion
         await AsyncStorage.removeItem('userToken');
       } else {
         const errorData = await response.json();
@@ -61,6 +61,14 @@ export default function MapScreen({ navigation }) {
     } catch (error) {
       console.error('Error Logout:', error);
       Alert.alert('Logout Failed', 'Check your network connection and try again.');
+    }
+  };
+
+  const handleMapPress = (event) => {
+    if (showRedFrame) {
+      const { coordinate } = event.nativeEvent;
+      console.log(`Latitude: ${coordinate.latitude}, Longitude: ${coordinate.longitude}`);
+      setMarkerCoordinate(coordinate);
     }
   };
 
@@ -75,9 +83,10 @@ export default function MapScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <MapView
-        style={styles.map}
+        style={[styles.map, showRedFrame ? styles.redFrame : null]}
         region={region}
         onRegionChangeComplete={(region) => setRegion(region)}
+        onPress={handleMapPress}
       >
         {location && (
           <Marker
@@ -85,12 +94,19 @@ export default function MapScreen({ navigation }) {
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
             }}
-            title="Vous êtes"
-            description="Location actuelle"
+            title="You are here"
+            description="Current location"
+          />
+        )}
+
+        {markerCoordinate && (
+          <Marker
+            coordinate={markerCoordinate}
+            title="New Marker"
+            description="New marker position"
           />
         )}
       </MapView>
-
 
       <Button
         icon="account"
@@ -105,7 +121,7 @@ export default function MapScreen({ navigation }) {
       <Button
         icon="plus"
         mode="contained"
-        onPress={() => setModalVisible(true)}
+        onPress={() => setShowRedFrame(!showRedFrame)}
         style={styles.addButton}
         labelStyle={styles.addButtonText}
       >
@@ -123,6 +139,12 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+  },
+  redFrame: {
+    borderWidth: 2,
+    borderColor: 'red',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   addButton: {
     position: 'absolute',
@@ -143,5 +165,5 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     elevation: 5,
     backgroundColor: 'tomato',
-  }
+  },
 });
