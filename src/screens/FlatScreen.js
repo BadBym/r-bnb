@@ -18,7 +18,7 @@ export default function FlatScreen({ visible, onDismiss, coordinates }) {
       try {
         const token = await AsyncStorage.getItem('userToken');
         if (token) {
-          const response = await fetch('http://192.168.1.138:3001/auth/current-user', {
+          const response = await fetch('http://192.168.1.4:3001/auth/current-user', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export default function FlatScreen({ visible, onDismiss, coordinates }) {
         authorId: userId, // Utiliser l'ID de l'utilisateur récupéré automatiquement
       };
 
-      const response = await fetch('http://192.168.1.138:3001/event/', {
+      const response = await fetch('http://192.168.1.4:3001/event/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

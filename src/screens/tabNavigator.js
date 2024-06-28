@@ -6,6 +6,7 @@ import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
 import MapScreen from './MapScreen';
 import FavoritesScreen from './FavoritesScreen';
+import Camera from './Camera';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -44,6 +45,17 @@ const BottomTabs = () => {
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="head" color={color} size={26} />
+          ),
+          tabBarBadge: 1
+        }}
+      />
+      <Tab.Screen
+        name="Camera"
+        component={Camera}
+        options={{
+          tabBarLabel: 'Camera',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="camera" color={color} size={26} />
           ),
           tabBarBadge: 1
         }}

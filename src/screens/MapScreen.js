@@ -42,7 +42,7 @@ export default function MapScreen({ navigation }) {
         return;
       }
 
-      const response = await fetch('http://192.168.1.138:3001/auth/logout', {
+      const response = await fetch('http://192.168.1.4:3001/auth/logout', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

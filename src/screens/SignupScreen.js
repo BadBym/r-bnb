@@ -9,7 +9,7 @@ export default function SignupScreen({ navigation }) {
 
         try {
           // Envoi des données au backend
-          const response = await fetch('http://192.168.1.138:3001/auth/signup', {
+          const response = await fetch('http://192.168.1.4:3001/auth/signup', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
